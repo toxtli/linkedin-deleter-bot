@@ -1,145 +1,15 @@
-﻿import sys
+﻿# python deleter.py -u [SEARCH_URL]
+
+import sys
 import json
 import time
 import getopt
 import subprocess
 from selenium import webdriver
-from selenium.common.exceptions import NoSuchElementException 
-from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
+from SeleniumHelper import SeleniumHelper
 
-reload(sys)  
+reload(sys)
 sys.setdefaultencoding('utf8')
-
-class SeleniumHelper:
-
-	WAIT = 99999
-	driver = None
-
-	def loadPage(self, page):
-		try:
-			self.driver.get(page)
-			return True
-		except:
-			return False
-
-	def submitForm(self, element):
-		try:
-			element.submit()
-			return True
-		except TimeoutException:
-			return False
-
-	def waitShowElement(self, selector, wait=99999):
-		try:
-			wait = WebDriverWait(self.driver, wait)
-			element = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, selector)))
-			return element
-		except:
-			return None
-
-	def waitHideElement(self, selector, wait):
-		try:
-			wait = WebDriverWait(self.driver, wait)
-			element = wait.until(EC.invisibility_of_element_located((By.CSS_SELECTOR, selector)))
-			return element
-		except:
-			return None
-
-	def getElementFrom(self, fromObject, selector):
-		try:
-			return fromObject.find_element_by_css_selector(selector)
-		except NoSuchElementException:
-			return None
-
-	def getElementsFrom(self, fromObject, selector):
-		try:
-			return fromObject.find_elements_by_css_selector(selector)
-		except NoSuchElementException:
-			return None		
-
-	def getElement(self, selector):
-		return self.getElementFrom(self.driver, selector)
-
-	def getElements(self, selector):
-		return self.getElementsFrom(self.driver, selector)
-
-	def getElementFromValue(self, fromObject, selector):
-		element = self.getElementFrom(fromObject, selector)
-		if element:
-			return element.text
-		return None
-
-	def getElementValue(self, selector):
-		element = self.getElement(selector)
-		if element:
-			return element.text
-		return None
-
-	def getElementFromAttribute(self, fromObject, selector, attribute):
-		element = self.getElementFrom(fromObject, selector)
-		if element:
-			return element.get_attribute(attribute)
-		return None
-
-	def getElementAttribute(self, selector, attribute):
-		element = self.getElement(selector)
-		if element:
-			return element.get_attribute(attribute)
-		return None
-
-	def getParentNode(self, node):
-		return node.find_element_by_xpath('..')
-
-	def getChildNodes(self, node):
-		return node.find_elements_by_xpath('./*')
-
-	def selectAndWrite(self, field, value):
-		fieldObject = self.getElement(field)
-		fieldObject.send_keys(value)
-		return fieldObject
-
-	def waitAndWrite(self, field, value):
-		fieldObject = self.waitShowElement(field, self.WAIT)
-		fieldObject.send_keys(value)
-		return fieldObject
-
-	def click(self, element):
-		actions = webdriver.ActionChains(self.driver)
-		actions.move_to_element(element)
-		actions.click(element)
-		actions.perform()
-
-	def moveToElement(self, element):
-		self.driver.execute_script("return arguments[0].scrollIntoView();", element)
-		actions = webdriver.ActionChains(self.driver)
-		actions.move_to_element(element)
-		actions.perform()
-
-	def saveScreenshot(self, path="screenshot.png"):
-		self.driver.save_screenshot(path)
-
-	def getBetween(self, text, strInit, strEnd):
-		exit = None
-		arr1 = text.split(strInit)
-		if len(arr1) > 1:
-			arr2 = arr1[1].split(strEnd)
-			exit = arr2[0]
-		return exit
-
-	def getCharsFrom(self, text, strInit, count):
-		exit = None
-		arr1 = text.split(strInit)
-		if len(arr1) > 1:
-			substr = arr1[1]
-			exit = substr[:count]
-		return exit
-
-	def close(self):
-		self.driver.quit()
 
 class LinkedinController(SeleniumHelper):
 
@@ -167,7 +37,7 @@ class LinkedinController(SeleniumHelper):
 	data = {}
 	token = ''
 	baseUrl = ''
-	criterias = ['president','vp','director','owner','founder','ceo','cto','sistemas','lead','desarroll','mobile','develop','software','hardware','firmware','programa','programm','engineer','ingeniero','partner','propietario','fundador','talent','recruit','head','recluta','tech','tecn','comput','empresario','empresaria','selecci','web','code','chief','entrepreneur','emprendedor','freelance','electro','bot','search','research','inve','human','socio','socia','data','datos','system','hack',' it',' ti','it ','ti ','rh ','hr ',' rh',' hr','founder','fund','técn','dueñ']
+	criterias = ['president','vp','director','owner','founder','ceo','cto','sistemas','lead','desarroll','mobile','develop','software','hardware','firmware','programa','programm','engineer','ingeniero','partner','propietario','fundador','talent','recruit','head','recluta','tech','tecn','comput','empresario','empresaria','selecci','web','code','chief','entrepreneur','emprendedor','freelance','electro','bot','search','research','inve','human','socio','socia','data','datos','system','hack',' it',' ti','it ','ti ','rh ','hr ',' rh',' hr','founder','fund','rrhh','devops','técn','dueñ']
 	contains = ['commercial','comercial']
 	callback = None
 
