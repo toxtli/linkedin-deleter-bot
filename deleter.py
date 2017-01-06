@@ -13,8 +13,8 @@ sys.setdefaultencoding('utf8')
 
 class LinkedinController(SeleniumHelper):
 
-	LOGIN_USER_VALUE = 'ctoxtli@gmail.com'
-	LOGIN_PASS_VALUE = 'hackool'
+	LOGIN_USER_VALUE = ''
+	LOGIN_PASS_VALUE = ''
 	LOGIN_USER_PATH_NORMAL = '#login-email'
 	LOGIN_PASS_PATH_NORMAL = '#login-password'
 
